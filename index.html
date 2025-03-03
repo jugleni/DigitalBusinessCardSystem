@@ -6,6 +6,13 @@
     <title>Digital Business Card - Jugleni Krinski</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TZTZH69M');</script>
+    <!-- End Google Tag Manager -->
     <style>
         :root {
             --primary-color: #000;
@@ -187,6 +194,7 @@
             box-shadow: var(--shadow);
             padding: 25px;
             margin-top: 20px;
+            display: none; /* Initially hidden */
         }
 
         .form-title {
@@ -408,7 +416,7 @@
             </div>
             <div class="modal-buttons">
                 <button class="close-btn" id="closeModal">Close</button>
-                <button class="download-btn" id="downloadVCard">Download vCard</button>
+                <button class="download-btn" id="downloadVCard">Add to Contacts</button>
             </div>
         </div>
     </div>
@@ -474,37 +482,40 @@
             // Clear existing contact links
             contactLinks.innerHTML = '';
 
-            // Create contact items
-            createContactItem('fas fa-envelope', 'Email', contactData.email, `mailto:${contactData.email}`);
-            createContactItem('fas fa-phone', 'Phone', contactData.phone, `tel:${contactData.phone}`);
-            createContactItem('fas fa-globe', 'Website', contactData.website, contactData.website);
+            // Create contact items with tracking IDs
+            createContactItem('fas fa-envelope', 'Email', contactData.email, `mailto:${contactData.email}`, 'email');
+            createContactItem('fas fa-phone', 'Phone', contactData.phone, `tel:${contactData.phone}`, 'phone');
+            createContactItem('fas fa-globe', 'Website', contactData.website, contactData.website, 'website');
             
             // Social media links
             if (contactData.instagram) {
-                createContactItem('fab fa-instagram', 'Instagram', contactData.instagram, `https://instagram.com/${contactData.instagram.replace('@', '')}`);
+                createContactItem('fab fa-instagram', 'Instagram', contactData.instagram, `https://instagram.com/${contactData.instagram.replace('@', '')}`, 'instagram');
             }
             
             if (contactData.linkedin) {
-                createContactItem('fab fa-linkedin', 'LinkedIn', 'Profile', contactData.linkedin);
+                createContactItem('fab fa-linkedin', 'LinkedIn', 'Profile', contactData.linkedin, 'linkedin');
             }
             
             if (contactData.twitter) {
-                createContactItem('fab fa-twitter', 'Twitter', contactData.twitter.replace('https://twitter.com/', '@'), contactData.twitter);
+                createContactItem('fab fa-twitter', 'Twitter', contactData.twitter.replace('https://twitter.com/', '@'), contactData.twitter, 'twitter');
             }
             
             if (contactData.facebook) {
-                createContactItem('fab fa-facebook', 'Facebook', 'Profile', contactData.facebook);
+                createContactItem('fab fa-facebook', 'Facebook', 'Profile', contactData.facebook, 'facebook');
             }
             
             if (contactData.github) {
-                createContactItem('fab fa-github', 'GitHub', 'Profile', contactData.github);
+                createContactItem('fab fa-github', 'GitHub', 'Profile', contactData.github, 'github');
             }
         }
 
-        // Create contact item
-        function createContactItem(iconClass, label, value, url = null) {
+        // Create contact item with tracking
+        function createContactItem(iconClass, label, value, url = null, trackingId = null) {
             const contactItem = document.createElement('div');
             contactItem.className = 'contact-item';
+            if (trackingId) {
+                contactItem.dataset.trackingId = trackingId;
+            }
 
             const contactIcon = document.createElement('div');
             contactIcon.className = 'contact-icon';
@@ -528,6 +539,10 @@
 
             if (url) {
                 contactItem.addEventListener('click', () => {
+                    // Track click event
+                    if (trackingId) {
+                        trackContactClick(trackingId);
+                    }
                     window.open(url, '_blank');
                 });
                 contactItem.style.cursor = 'pointer';
@@ -536,7 +551,22 @@
             contactLinks.appendChild(contactItem);
         }
 
-        // Generate vCard
+        // Track contact clicks (analytics)
+        function trackContactClick(trackingId) {
+            console.log(`Contact item clicked: ${trackingId}`);
+            
+            // Google Tag Manager tracking (if available)
+            if (window.dataLayer) {
+                window.dataLayer.push({
+                    'event': 'contact_click',
+                    'contact_type': trackingId
+                });
+            }
+            
+            // You can implement other tracking methods here
+        }
+
+        // Generate vCard content
         function generateVCard() {
             // Start with basic vCard format
             let vCardContent = `BEGIN:VCARD
@@ -576,16 +606,19 @@ URL:${contactData.website}`;
             return vCardContent;
         }
 
-        // Create QR code with current URL
+        // Create QR code with vCard data URI
         function generateQRCode() {
             const qrcodeContainer = document.getElementById('qrcode');
             qrcodeContainer.innerHTML = '';
             
-            // Get the current URL to include in QR
-            const currentUrl = window.location.href;
+            // Generate vCard content
+            const vCardContent = generateVCard();
             
-            // Generate QR code
-            QRCode.toCanvas(qrcodeContainer, currentUrl, {
+            // Create a Data URI for the vCard
+            const vCardDataUri = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vCardContent);
+            
+            // Generate QR code with the Data URI
+            QRCode.toCanvas(qrcodeContainer, vCardDataUri, {
                 width: 200,
                 margin: 1,
                 color: {
@@ -597,23 +630,54 @@ URL:${contactData.website}`;
             });
         }
 
-        // Download vCard file
-        function downloadVCard() {
+        // Open contact directly in phone's contacts app
+        function openContactInApp() {
+            // Generate vCard content
             const vCardContent = generateVCard();
-            const blob = new Blob([vCardContent], { type: 'text/vcard' });
-            const url = URL.createObjectURL(blob);
             
+            // Create data URI for vCard
+            const vCardDataUri = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vCardContent);
+            
+            // Create a temporary link to open the vCard
             const a = document.createElement('a');
-            a.href = url;
-            a.download = `${contactData.name.replace(/\s+/g, '_')}.vcf`;
+            a.href = vCardDataUri;
+            a.setAttribute('download', `${contactData.name.replace(/\s+/g, '_')}.vcf`);
+            
+            // iOS/Safari requires the link to be in the DOM
             document.body.appendChild(a);
+            
+            // Click the link to download the file which will prompt the contacts app
             a.click();
             
             // Clean up
             setTimeout(() => {
                 document.body.removeChild(a);
-                URL.revokeObjectURL(url);
             }, 100);
+        }
+
+        // Alternative method to open contact using legacy method for iOS
+        function downloadVCard() {
+            const vCardContent = generateVCard();
+            const blob = new Blob([vCardContent], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            
+            // Try to use direct window.location approach first (works better on some mobile devices)
+            try {
+                window.location.href = url;
+            } catch (e) {
+                // Fallback to traditional link method
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${contactData.name.replace(/\s+/g, '_')}.vcf`;
+                document.body.appendChild(a);
+                a.click();
+                
+                // Clean up
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+            }
         }
 
         // Submit form and send data using FormSubmit.co service
@@ -664,20 +728,45 @@ URL:${contactData.website}`;
             // Load contact data
             loadContactData();
 
-            // Save contact button
+            // Save contact button - Now opens contact directly and shows form afterward
             saveContactBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                generateQRCode();
-                qrModal.style.display = 'flex';
+                
+                // For mobile devices, try to open contact directly
+                if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                    openContactInApp();
+                    
+                    // Show the share form with a delay to allow the contact app to open first
+                    setTimeout(() => {
+                        document.getElementById('shareForm').style.display = 'block';
+                        // Scroll to the form
+                        document.getElementById('shareForm').scrollIntoView({ behavior: 'smooth' });
+                    }, 1500);
+                } else {
+                    // For desktop, show QR code modal
+                    generateQRCode();
+                    qrModal.style.display = 'flex';
+                }
             });
 
-            // Close QR modal
+            // Close QR modal and show share form
             closeModalBtn.addEventListener('click', () => {
                 qrModal.style.display = 'none';
+                document.getElementById('shareForm').style.display = 'block';
+                // Scroll to the form
+                document.getElementById('shareForm').scrollIntoView({ behavior: 'smooth' });
             });
 
             // Download vCard button
-            downloadVCardBtn.addEventListener('click', downloadVCard);
+            downloadVCardBtn.addEventListener('click', () => {
+                downloadVCard();
+                setTimeout(() => {
+                    qrModal.style.display = 'none';
+                    document.getElementById('shareForm').style.display = 'block';
+                    // Scroll to the form
+                    document.getElementById('shareForm').scrollIntoView({ behavior: 'smooth' });
+                }, 1000);
+            });
 
             // Form submission
             contactForm.addEventListener('submit', submitForm);
@@ -699,5 +788,10 @@ URL:${contactData.website}`;
             });
         });
     </script>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZTZH69M"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
 </body>
+
 </html>
