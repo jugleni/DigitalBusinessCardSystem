@@ -1,123 +1,150 @@
-# Digital Business Card Deployment Instructions
+# Digital Business Card
 
-This guide provides step-by-step instructions for setting up and hosting your digital business card on Cloudflare Pages.
+A clean, responsive digital business card with vCard export and contact sharing capabilities.
 
-## Required Files
+## Features
 
-1. `index.html`: The main file containing all HTML, CSS, and JavaScript code
-2. `contact-data.json`: JSON file with your contact information
-3. A profile image (separate upload or using a URL)
+- Responsive design that works on all devices
+- Direct contact saving to device's address book
+- Contact sharing form with email integration
+- Google Tag Manager integration for analytics
+- QR code generation for easy sharing
 
-## Project Setup
+## File Structure
 
-### 1. Configure the contact-data.json file
+```
+digital-business-card/
+├── index.html           # Main HTML structure
+├── styles.css           # Styling and layout
+├── script.js            # JavaScript functionality
+├── contact-data.json    # Your contact information 
+├── your-photo.jpg       # Your profile photo (optional)
+└── README.md            # This file
+```
 
-Edit the `contact-data.json` file to include your information:
+## Setup Instructions
+
+### 1. Basic Setup
+
+1. Download all files to your computer
+2. Edit `contact-data.json` with your information
+3. Upload all files to your web hosting (e.g., Cloudflare Pages)
+
+### 2. Configure Your Contact Data
+
+Edit `contact-data.json` with your personal information:
+
 ```json
 {
-  "name": "Jugleni Krinski",
-  "title": "Network Support | Software & App Development | Digital Marketing for Funnels",
-  "company": "Krinski",
-  "email": "jugleni@krinski.com",
-  "phone": "+1 469-000-0000",
-  "website": "https://www.jugleni.com",
-  "instagram": "@jugleni",
-  "linkedin": "https://linkedin.com/in/jugleni",
-  "twitter": "https://twitter.com/jugleni",
-  "facebook": "https://facebook.com/jugleni",
-  "github": "https://github.com/jugleni",
-  "profileImage": "https://placehold.co/200x200"
+  "name": "Your Name (Nickname)",
+  "title": "Your Job Title | Additional Information",
+  "company": "Your Company",
+  "education": "Your Education Information",
+  "email": "your-email@example.com",
+  "phone": "+1 234-567-8900",
+  "website": "https://yourwebsite.com",
+  "instagram": "@yourhandle",
+  "instagram_url": "https://instagram.com/yourhandle",
+  "linkedin": "https://linkedin.com/in/yourprofile",
+  "twitter": "@yourhandle",
+  "twitter_url": "https://twitter.com/yourhandle",
+  "facebook": "https://facebook.com/yourprofile",
+  "github": "https://github.com/yourusername",
+  "profileImage": "your-photo.jpg"
 }
 ```
 
-### 2. Configure the Form to Receive Emails
+### 3. Add Your Profile Photo
 
-The system uses [FormSubmit.co](https://formsubmit.co/), a free form processing service. The form is already configured to send data to the email defined in the JSON file, but you need to activate it:
+#### Option 1: Local Image
+1. Upload your profile photo to your server along with the other files
+2. Set "profileImage" to the filename (e.g., "your-photo.jpg")
 
-1. The first time someone submits a form, you'll receive a confirmation email from FormSubmit.co
-2. Follow the instructions in that email to activate the service
-3. After confirmation, all completed forms will be sent directly to your email
+#### Option 2: External Image
+1. Upload your image to an image hosting service
+2. Set "profileImage" to the full URL of your image
 
-### 3. Optional: Set Up Google Sheets Integration
+### 4. Google Tag Manager Setup (Optional)
 
-If you prefer to receive data in a Google Sheet:
+For tracking analytics:
 
-1. Create a new spreadsheet in Google Sheets
-2. Use the [FormSubmit for Google Sheets](https://workspace.google.com/marketplace/app/formsubmit_for_google_sheets/262617744923) add-on
-3. Configure the add-on to receive data from your form
+1. Create a Google Tag Manager account
+2. In the `index.html` file, replace `GTM-XXXXX` with your GTM ID
+3. Configure your GTM account to track the following events:
+   - Event name: `contact_click`
+   - Variables:
+     - `contact_type`: Type of contact clicked
+     - `device_type`: Mobile or desktop
+     - `browser`: Browser name
 
-## Hosting on Cloudflare Pages
+### 5. FormSubmit Setup
 
-### 1. Create a Cloudflare Account (if you don't have one)
+The form uses FormSubmit.co to send emails:
 
-1. Go to [cloudflare.com](https://cloudflare.com) and create a free account
-2. Confirm your email and access the dashboard
+1. The first time someone submits the form, you'll receive a confirmation email
+2. Click the activation link in that email to start receiving form submissions
+3. All future submissions will be sent directly to your email
 
-### 2. Host the Project on Cloudflare Pages
+## Customization
 
-#### Option 1: Using GitHub or another Git repository
+### Colors and Styling
 
-1. Create a repository with your files
-2. In the Cloudflare dashboard, go to "Pages" > "Create a project"
-3. Connect your GitHub/GitLab account and select the repository
-4. Configure as:
-   - Framework preset: None
-   - Build command: leave blank
-   - Build output directory: leave blank
-5. Click "Save and Deploy"
+Edit `styles.css` to change colors and styling. The primary colors are defined at the top of the file using CSS variables:
 
-#### Option 2: Direct Upload (easier)
+```css
+:root {
+    --primary-color: #333;
+    --bg-color: #f8f8f8;
+    --card-bg: #fff;
+    --text-color: #333;
+    --accent-color: #3498db;
+    /* more variables... */
+}
+```
 
-1. In the Cloudflare dashboard, go to "Pages" > "Create a project"
-2. Select "Direct Upload"
-3. Drag and drop your folder containing the files or select the files individually
-4. Click "Deploy site"
+### Form Fields
 
-### 3. Configure a Custom Domain (Optional)
-
-1. In the project dashboard on Cloudflare Pages, go to "Custom domains"
-2. Click "Set up a custom domain"
-3. Follow the instructions to configure your custom domain
-
-## Features and Usage
-
-### How the Digital Card Works:
-
-1. **Contact View**: Visitors will see your information in a beautiful, professional layout
-2. **Save Contact**: Visitors can download a VCF file compatible with Android and iOS
-3. **Share QR Code**: You can share the QR Code for quick access to your contact
-4. **Return Form**: Visitors can share their information, which will be sent to your email
-
-### How to Use:
-
-1. Share the Cloudflare link (example: `your-project.pages.dev`)
-2. Or share the QR Code by accessing the site and clicking "Save contact"
-3. If you have a custom domain, use it for a more professional address
-
-## Customization Tips
-
-If you want to customize your digital card:
-
-1. **Colors**: In the HTML file, modify the CSS variables in `:root` to change the colors
-2. **Icons**: You can find more icons at [Font Awesome](https://fontawesome.com/icons) and replace them in the HTML
-3. **Profile image**: Upload a high-quality image (recommended: square, 500x500px)
+To modify the form fields, edit the `<form>` section in `index.html`.
 
 ## Troubleshooting
 
-### Form is not sending emails:
-- Check if you've properly configured the email in FormSubmit
-- Check your spam folder for the confirmation email from FormSubmit
+### Form Not Sending Emails
 
-### QR Code is not working:
-- Make sure you're using HTTPS (Cloudflare Pages already provides this)
-- Test the QR Code on different devices
+1. Check if you've confirmed the FormSubmit activation email
+2. Look in your spam folder for the confirmation email
+3. Try using a direct form submission method by adding your email to the form action:
+   
+   ```html
+   <form id="contactForm" action="https://formsubmit.co/your-email@example.com" method="POST">
+   ```
 
-### Contact file is not saving on some devices:
-- Make sure the phone number format is correct (+XX XX XXXXX-XXXX)
-- Check if the VCF file is properly formatted
+### Profile Image Not Loading
 
-## Support
+1. Check if the path/URL in `contact-data.json` is correct
+2. Verify that the image file exists and is accessible
+3. The system will fall back to showing your initials if the image fails to load
 
-For Cloudflare Pages issues, see the [official documentation](https://developers.cloudflare.com/pages/).
+### QR Code Issues
 
-For FormSubmit issues, visit [formsubmit.co/help](https://formsubmit.co/help).
+1. QR code may not work if your server is not using HTTPS
+2. Make sure your hosting provider supports HTTPS
+3. The QR code contains a direct vCard data URI, so it should work offline
+
+## Advanced Customization
+
+For more advanced customization, you can:
+
+1. Modify the vCard format in the `generateVCard()` function in `script.js`
+2. Add more fields to the contact form in `index.html`
+3. Change the QR code settings in the `generateQRCode()` function
+4. Add animations or transitions in `styles.css`
+
+## License
+
+This project is free to use for personal and commercial purposes.
+
+## Credits
+
+- QR Code generation: [qrcode.js](https://github.com/soldair/node-qrcode)
+- Icons: [Font Awesome](https://fontawesome.com/)
+- Form handling: [FormSubmit.co](https://formsubmit.co/)
