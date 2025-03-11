@@ -478,12 +478,12 @@
                 // Add error handling for image loading
                 profileImage.onerror = function() {
                     console.error("Error loading profile image. Using default image.");
-                    this.src = "photo.png" + 
+                    this.src = "https://card.jugleni.com/photo.png" + 
                         encodeURIComponent(contactData.name.split(' ')[0][0] + contactData.name.split(' ')[1][0]);
                 };
             } else {
                 // Generate initials as fallback
-                profileImage.src = "photo.png" + 
+                profileImage.src = "https://card.jugleni.com/photo.png" + 
                     encodeURIComponent(contactData.name.split(' ')[0][0] + contactData.name.split(' ')[1][0]);
             }
             
