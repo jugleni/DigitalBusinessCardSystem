@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Business Card</title>
+    <title>Digital Business Card - Jugleni Krinski</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
     
     <!-- Google Tag Manager -->
@@ -16,6 +15,325 @@
     })(window,document,'script','dataLayer','GTM-XXXXX'); // Replace GTM-XXXXX with your GTM ID
     </script>
     <!-- End Google Tag Manager -->
+
+    <style>
+        /* Main variables */
+        :root {
+            --primary-color: #333;
+            --bg-color: #f8f8f8;
+            --card-bg: #fff;
+            --text-color: #333;
+            --accent-color: #3498db;
+            --border-radius: 12px;
+            --button-radius: 30px;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --icon-bg: #f1f5f9;
+        }
+
+        /* Reset and general styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 450px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Card styles */
+        .card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-bottom: 20px;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            padding: 10px 20px 25px;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            color: var(--primary-color);
+            position: relative;
+            display: inline-block;
+        }
+
+        .logo-star {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            font-size: 1.2rem;
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 15px auto;
+            border: 3px solid #fff;
+            box-shadow: var(--shadow);
+            display: block;
+        }
+
+        /* Profile information styles */
+        .profile-info {
+            padding: 0 20px 20px;
+            text-align: center;
+        }
+
+        .name {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+
+        .title {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 5px;
+            line-height: 1.5;
+        }
+
+        .company {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .education {
+            font-size: 0.95rem;
+            color: #666;
+            font-style: italic;
+            margin-top: 8px;
+        }
+
+        /* Contact links styles */
+        .contact-links {
+            padding: 10px 0;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+
+        .contact-item:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .contact-icon {
+            width: 44px;
+            height: 44px;
+            background-color: var(--icon-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .contact-icon i {
+            font-size: 1.3rem;
+            color: var(--accent-color);
+        }
+
+        .contact-info {
+            flex-grow: 1;
+        }
+
+        .contact-label {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 2px;
+        }
+
+        .contact-value {
+            font-size: 1rem;
+            color: var(--text-color);
+            word-break: break-all;
+        }
+
+        /* Button styles */
+        .button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            border-radius: var(--button-radius);
+            text-decoration: none;
+            font-weight: bold;
+            margin: 20px 0 10px;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        /* Share form styles */
+        .share-form {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+            margin-top: 20px;
+            display: none; /* Initially hidden */
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+
+        .status-message {
+            text-align: center;
+            margin: 15px 0;
+            padding: 10px;
+            border-radius: var(--border-radius);
+        }
+
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .privacy-note {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 15px;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .qr-code-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        #qrcode {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .close-btn {
+            padding: 10px 20px;
+            background-color: #f1f1f1;
+            border: none;
+            border-radius: var(--button-radius);
+            cursor: pointer;
+        }
+
+        .download-btn {
+            padding: 10px 20px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: var(--button-radius);
+            cursor: pointer;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 480px) {
+            .container {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
@@ -104,51 +422,544 @@
         </div>
     </div>
 
-    <!-- Diagnóstico para carregamento (remover após teste) -->
     <script>
-        window.addEventListener('error', function(e) {
-            if (e.target.tagName === 'SCRIPT' && e.target.src.includes('script.js')) {
-                console.error('Erro no carregamento do script.js');
-                alert('Erro ao carregar script.js. Verifique o console.');
+        // Log inicial para verificar se o script está carregando
+        console.log('Script iniciando...');
+        
+        // Dados de contato embutidos diretamente (substitui a necessidade do arquivo JSON)
+        const contactData = {
+            "name": "Jugleni Krinski (Jake)",
+            "title": "Network Support | Software & App Development | Digital Marketing for Funnels",
+            "company": "Krinski",
+            "education": "Theology Student at NPU Dallas",
+            "email": "jugleni@krinski.com",
+            "phone": "+1 469-328-5888",
+            "website": "https://www.jugleni.com",
+            "instagram": "@jugleni",
+            "instagram_url": "https://instagram.com/jugleni",
+            "linkedin": "https://linkedin.com/in/jugleni",
+            "twitter": "@jugleni",
+            "twitter_url": "https://twitter.com/jugleni",
+            "facebook": "https://facebook.com/jugleni",
+            "github": "https://github.com/jugleni",
+            "profileImage": "https://placehold.co/200x200"
+        };
+
+        // DOM elements
+        const profileImage = document.getElementById('profileImage');
+        const profileName = document.getElementById('profileName');
+        const profileTitle = document.getElementById('profileTitle');
+        const profileCompany = document.getElementById('profileCompany');
+        const profileEducation = document.getElementById('profileEducation');
+        const contactLinks = document.getElementById('contactLinks');
+        const saveContactBtn = document.getElementById('saveContact');
+        const contactForm = document.getElementById('contactForm');
+        const statusMessage = document.getElementById('statusMessage');
+        const qrModal = document.getElementById('qrModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const downloadVCardBtn = document.getElementById('downloadVCard');
+        const shareForm = document.getElementById('shareForm');
+
+        // ------------------------
+        // Profile initialization
+        // ------------------------
+
+        /**
+         * Initialize profile with contact data
+         */
+         function initializeProfile() {
+            console.log('Inicializando perfil...');
+            
+            document.title = `Digital Business Card - ${contactData.name}`;
+            
+            // Set profile image with error handling
+            if (contactData.profileImage) {
+                profileImage.src = contactData.profileImage;
+                // Add error handling for image loading
+                profileImage.onerror = function() {
+                    console.error("Error loading profile image. Using default image.");
+                    this.src = "https://placehold.co/200x200/222/fff?text=" + 
+                        encodeURIComponent(contactData.name.split(' ')[0][0] + contactData.name.split(' ')[1][0]);
+                };
+            } else {
+                // Generate initials as fallback
+                profileImage.src = "https://placehold.co/200x200/222/fff?text=" + 
+                    encodeURIComponent(contactData.name.split(' ')[0][0] + contactData.name.split(' ')[1][0]);
             }
-        }, true);
+            
+            // Set text information
+            profileName.textContent = contactData.name;
+            profileTitle.textContent = contactData.title;
+            profileCompany.textContent = contactData.company;
+            
+            // Set education if available
+            if (contactData.education) {
+                profileEducation.textContent = contactData.education;
+            } else {
+                profileEducation.style.display = 'none';
+            }
+
+            // Clear existing contact links
+            contactLinks.innerHTML = '';
+
+            // Create contact items with links and proper display
+            createContactItem('fas fa-envelope', 'Email', contactData.email, `mailto:${contactData.email}`);
+            createContactItem('fas fa-phone', 'Phone', contactData.phone, `tel:${contactData.phone}`);
+            createContactItem('fas fa-globe', 'Website', contactData.website, ensureHttps(contactData.website));
+            
+            // Social media links with full URL display when appropriate
+            if (contactData.instagram) {
+                const igDisplay = contactData.instagram_url ? `${contactData.instagram} (${formatUrl(contactData.instagram_url)})` : contactData.instagram;
+                const igUrl = contactData.instagram_url || `https://instagram.com/${contactData.instagram.replace('@', '')}`;
+                createContactItem('fab fa-instagram', 'Instagram', igDisplay, igUrl);
+            }
+            
+            if (contactData.linkedin) {
+                createContactItem('fab fa-linkedin', 'LinkedIn', formatUrl(contactData.linkedin), contactData.linkedin);
+            }
+            
+            if (contactData.twitter) {
+                const twitterDisplay = contactData.twitter_url ? `${contactData.twitter} (${formatUrl(contactData.twitter_url)})` : contactData.twitter;
+                const twitterUrl = contactData.twitter_url || `https://twitter.com/${contactData.twitter.replace('@', '')}`;
+                createContactItem('fab fa-twitter', 'Twitter', twitterDisplay, twitterUrl);
+            }
+            
+            if (contactData.facebook) {
+                createContactItem('fab fa-facebook', 'Facebook', formatUrl(contactData.facebook), contactData.facebook);
+            }
+            
+            if (contactData.github) {
+                createContactItem('fab fa-github', 'GitHub', formatUrl(contactData.github), contactData.github);
+            }
+            
+            console.log('Perfil inicializado com sucesso');
+        }
+
+        // ------------------------
+        // Contact item creation
+        // ------------------------
+
+        /**
+         * Create contact item with icon, label, and value
+         */
+        function createContactItem(iconClass, label, value, url = null) {
+            const contactItem = document.createElement('div');
+            contactItem.className = 'contact-item';
+            contactItem.setAttribute('data-contact-type', label.toLowerCase());
+
+            const contactIcon = document.createElement('div');
+            contactIcon.className = 'contact-icon';
+            contactIcon.innerHTML = `<i class="${iconClass}"></i>`;
+
+            const contactInfo = document.createElement('div');
+            contactInfo.className = 'contact-info';
+
+            const contactLabel = document.createElement('div');
+            contactLabel.className = 'contact-label';
+            contactLabel.textContent = label;
+
+            const contactValue = document.createElement('div');
+            contactValue.className = 'contact-value';
+            contactValue.textContent = value;
+
+            contactInfo.appendChild(contactLabel);
+            contactInfo.appendChild(contactValue);
+            contactItem.appendChild(contactIcon);
+            contactItem.appendChild(contactInfo);
+
+            if (url) {
+                contactItem.addEventListener('click', () => {
+                    // Track the click before opening the URL
+                    trackContactClick(label.toLowerCase());
+                    
+                    // Use target="_blank" to open in a new tab
+                    // Add specific handling for mobile browsers
+                    if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                        // For iOS devices, Safari handles this well
+                        window.open(url, '_blank');
+                    } else if (/Android/i.test(navigator.userAgent)) {
+                        // For Android, Chrome/default browser
+                        window.open(url, '_blank');
+                    } else {
+                        // Default for other devices
+                        window.open(url, '_blank');
+                    }
+                });
+                contactItem.style.cursor = 'pointer';
+            }
+
+            contactLinks.appendChild(contactItem);
+        }
+
+        // ------------------------
+        // VCard & QR Code functions
+        // ------------------------
+
+        /**
+         * Generate vCard content
+         */
+         function generateVCard() {
+            // Start with basic vCard format
+            let vCardContent = `BEGIN:VCARD
+VERSION:3.0
+FN:${contactData.name}
+N:${contactData.name.split(' ').pop()};${contactData.name.split(' ').shift()};;;
+TITLE:${contactData.title}
+ORG:${contactData.company}
+EMAIL:${contactData.email}
+TEL;TYPE=CELL:${contactData.phone}
+URL:${contactData.website}`;
+
+            // Add education if available
+            if (contactData.education) {
+                vCardContent += `\nNOTE:${contactData.education}`;
+            }
+
+            // Add social media profiles
+            if (contactData.instagram) {
+                vCardContent += `\nX-SOCIALPROFILE;TYPE=instagram:${contactData.instagram.replace('@', '')}`;
+            }
+            
+            if (contactData.linkedin) {
+                vCardContent += `\nX-SOCIALPROFILE;TYPE=linkedin:${contactData.linkedin}`;
+            }
+            
+            if (contactData.twitter) {
+                vCardContent += `\nX-SOCIALPROFILE;TYPE=twitter:${contactData.twitter.replace('@', '')}`;
+            }
+            
+            if (contactData.facebook) {
+                vCardContent += `\nX-SOCIALPROFILE;TYPE=facebook:${contactData.facebook}`;
+            }
+            
+            if (contactData.github) {
+                vCardContent += `\nX-SOCIALPROFILE;TYPE=github:${contactData.github}`;
+            }
+            
+            // End vCard
+            vCardContent += `\nEND:VCARD`;
+            
+            return vCardContent;
+        }
+
+        /**
+         * Create QR code with vCard data URI
+         */
+        function generateQRCode() {
+            const qrcodeContainer = document.getElementById('qrcode');
+            qrcodeContainer.innerHTML = '';
+            
+            // Generate vCard content
+            const vCardContent = generateVCard();
+            
+            // Create a Data URI for the vCard
+            const vCardDataUri = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vCardContent);
+            
+            // Generate QR code with the Data URI
+            QRCode.toCanvas(qrcodeContainer, vCardDataUri, {
+                width: 200,
+                margin: 1,
+                color: {
+                    dark: '#000000',
+                    light: '#ffffff'
+                }
+            }, function(error) {
+                if (error) console.error(error);
+            });
+        }
+
+        /**
+         * Open contact directly in phone's contacts app
+         */
+        function openContactInApp() {
+            // Track the contact save action
+            trackContactClick('save_contact');
+            
+            // Generate vCard content
+            const vCardContent = generateVCard();
+            
+            // Create data URI for vCard
+            const vCardDataUri = 'data:text/vcard;charset=utf-8,' + encodeURIComponent(vCardContent);
+            
+            // Create a temporary link to open the vCard
+            const a = document.createElement('a');
+            a.href = vCardDataUri;
+            a.setAttribute('download', `${contactData.name.replace(/\s+/g, '_')}.vcf`);
+            
+            // iOS/Safari requires the link to be in the DOM
+            document.body.appendChild(a);
+            
+            // Click the link to download the file which will prompt the contacts app
+            a.click();
+            
+            // Clean up
+            setTimeout(() => {
+                document.body.removeChild(a);
+                
+                // Show the share form after a short delay
+                setTimeout(() => {
+                    shareForm.style.display = 'block';
+                    // Scroll to the form
+                    shareForm.scrollIntoView({ behavior: 'smooth' });
+                }, 1000); // Delay showing the form to give time for the contacts app to open
+            }, 100);
+        }
+
+        /**
+         * Alternative method to open contact using legacy method for iOS
+         */
+        function downloadVCard() {
+            // Track the download action
+            trackContactClick('download_vcard');
+            
+            const vCardContent = generateVCard();
+            const blob = new Blob([vCardContent], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            
+            // Try to use direct window.location approach first (works better on some mobile devices)
+            try {
+                window.location.href = url;
+            } catch (e) {
+                // Fallback to traditional link method
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${contactData.name.replace(/\s+/g, '_')}.vcf`;
+                document.body.appendChild(a);
+                a.click();
+                
+                // Clean up
+                setTimeout(() => {
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, 100);
+            }
+            
+            // Show the share form after a short delay
+            setTimeout(() => {
+                shareForm.style.display = 'block';
+                qrModal.style.display = 'none';
+                // Scroll to the form
+                shareForm.scrollIntoView({ behavior: 'smooth' });
+            }, 1500);
+        }
+
+        // ------------------------
+        // Form submission
+        // ------------------------
+
+        /**
+         * Submit form data
+         */
+         function submitForm(e) {
+            e.preventDefault();
+            
+            // Display loading message
+            statusMessage.textContent = 'Sending your information...';
+            statusMessage.className = 'status-message';
+            statusMessage.style.display = 'block';
+            
+            // Get form data
+            const formData = new FormData(contactForm);
+            
+            // Add recipient email from contact data
+            formData.append('_replyto', contactData.email);
+            
+            // Important: Add these fields for FormSubmit.co to work properly
+            formData.append('_subject', `New contact from ${formData.get('fullName')}`);
+            formData.append('_template', 'table'); // Use table template for better formatting
+            
+            // Convert FormData to URL-encoded string for fetch request
+            const formBody = new URLSearchParams(formData);
+            
+            // Send data using formsubmit.co
+            fetch('https://formsubmit.co/ajax/' + contactData.email, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+                    'Accept': 'application/json'
+                },
+                body: formBody
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Success message
+                statusMessage.textContent = 'Thank you! Your contact information has been sent successfully.';
+                statusMessage.className = 'status-message success';
+                contactForm.reset();
+                
+                // Track successful submission
+                trackContactClick('form_submitted');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                
+                // Try alternative submission method using form action
+                console.log('Trying alternative submission method...');
+                
+                // Create a hidden form for direct submission
+                const backupForm = document.createElement('form');
+                backupForm.method = 'POST';
+                backupForm.action = 'https://formsubmit.co/' + contactData.email;
+                backupForm.style.display = 'none';
+                
+                // Add all form fields
+                for (const pair of formData.entries()) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = pair[0];
+                    input.value = pair[1];
+                    backupForm.appendChild(input);
+                }
+                
+                // Add return URL to come back to this page
+                const returnUrl = document.createElement('input');
+                returnUrl.type = 'hidden';
+                returnUrl.name = '_next';
+                returnUrl.value = window.location.href;
+                backupForm.appendChild(returnUrl);
+                
+                // Add to DOM and submit
+                document.body.appendChild(backupForm);
+                backupForm.submit();
+                
+                // No need for error message as the page will redirect
+            });
+        }
+
+        // ------------------------
+        // Utility functions
+        // ------------------------
+
+        /**
+         * Track contact clicks - Google Tag Manager integration
+         */
+        function trackContactClick(contactType) {
+            // Check if Google Tag Manager is available
+            if (window.dataLayer) {
+                window.dataLayer.push({
+                    'event': 'contact_click',
+                    'contact_type': contactType,
+                    'device_type': /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+                    'browser': getBrowserName()
+                });
+            }
+            
+            // Log to console for debugging
+            console.log(`Contact clicked: ${contactType} on ${getBrowserName()}`);
+        }
+
+        /**
+         * Get browser name for analytics
+         */
+        function getBrowserName() {
+            const userAgent = navigator.userAgent;
+            let browserName;
+            
+            if (/Safari/i.test(userAgent) && !/Chrome/i.test(userAgent)) {
+                browserName = 'Safari';
+            } else if (/Chrome/i.test(userAgent)) {
+                browserName = 'Chrome';
+            } else if (/Firefox/i.test(userAgent)) {
+                browserName = 'Firefox';
+            } else if (/MSIE|Trident/i.test(userAgent)) {
+                browserName = 'IE';
+            } else if (/Edge/i.test(userAgent)) {
+                browserName = 'Edge';
+            } else {
+                browserName = 'Unknown';
+            }
+            
+            return browserName;
+        }
+
+        /**
+         * Ensure URL starts with http:// or https://
+         */
+        function ensureHttps(url) {
+            if (!url) return '';
+            return url.startsWith('http') ? url : 'https://' + url;
+        }
+
+        /**
+         * Format URL for display (remove https:// and trailing slash)
+         */
+        function formatUrl(url) {
+            if (!url) return '';
+            return url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+        }
+
+        // ------------------------
+        // Event listeners
+        // ------------------------
+
+        // Event listener for page load
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM carregado, inicializando aplicativo...');
+            
+            // Initialize profile
+            initializeProfile();
+
+            // Save contact button - Now opens contact directly and shows form afterward
+            if (saveContactBtn) {
+                saveContactBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log('Botão Save Contact clicado');
+                    
+                    // For mobile devices, try to open contact directly
+                    if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                        openContactInApp();
+                    } else {
+                        // For desktop, show QR code modal
+                        generateQRCode();
+                        qrModal.style.display = 'flex';
+                    }
+                });
+            } else {
+                console.error('Botão saveContactBtn não encontrado');
+            }
+
+            // Close QR modal and show share form
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', () => {
+                    qrModal.style.display = 'none';
+                    shareForm.style.display = 'block';
+                    // Scroll to the form
+                    shareForm.scrollIntoView({ behavior: 'smooth' });
+                });
+            }
+
+            // Download vCard button
+            if (downloadVCardBtn) {
+                downloadVCardBtn.addEventListener('click', downloadVCard);
+            }
+
+            // Form submission
+            if (contactForm) {
+                contactForm.addEventListener('submit', submitForm);
+            }
+
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === qrModal) {
+                    qrModal.style.display = 'none';
+                }
+            });
+            
+            console.log('Todos os event listeners configurados');
+        });
+
+        // Verificação adicional após 1 segundo (não deve ser necessária mas serve como backup)
+        setTimeout(() => {
+            if (!profileName.textContent) {
+                console.log('Backup: Inicializando perfil novamente após 1 segundo');
+                initializeProfile();
+            }
+        }, 1000);
     </script>
-
-<script>
-    // Dados de contato embutidos diretamente
-    const contactData = {
-      "name": "Jugleni Krinski (Jake)",
-      "title": "Network Support | Software & App Development | Digital Marketing for Funnels",
-      "company": "Krinski",
-      "education": "Theology Student at NPU Dallas",
-      "email": "jugleni@krinski.com",
-      "phone": "+1 469-328-5888",
-      "website": "https://www.jugleni.com",
-      "instagram": "@jugleni",
-      "instagram_url": "https://instagram.com/jugleni",
-      "linkedin": "https://linkedin.com/in/jugleni",
-      "twitter": "@jugleni",
-      "twitter_url": "https://twitter.com/jugleni",
-      "facebook": "https://facebook.com/jugleni",
-      "github": "https://github.com/jugleni",
-      "profileImage": "https://placehold.co/200x200"
-    };
-  
-    // Garantir que os dados sejam carregados imediatamente
-    document.addEventListener('DOMContentLoaded', () => {
-      // Preencher os dados manualmente
-      document.getElementById('profileName').textContent = contactData.name;
-      document.getElementById('profileTitle').textContent = contactData.title;
-      document.getElementById('profileCompany').textContent = contactData.company;
-      document.getElementById('profileEducation').textContent = contactData.education;
-      document.getElementById('profileImage').src = contactData.profileImage;
-      
-      // Inicializar o perfil completo
-      initializeProfile();
-    });
-  </script>
-
-    <!-- Script principal -->
-    <script src="script.js"></script>
 </body>
 </html>
