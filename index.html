@@ -115,11 +115,36 @@
     </script>
 
 <script>
-    console.log('Diagnóstico: Script de verificação está rodando');
-    console.log('DOM Elements:', {
-      profileImage: !!document.getElementById('profileImage'),
-      profileName: !!document.getElementById('profileName'),
-      contactLinks: !!document.getElementById('contactLinks')
+    // Dados de contato embutidos diretamente
+    const contactData = {
+      "name": "Jugleni Krinski (Jake)",
+      "title": "Network Support | Software & App Development | Digital Marketing for Funnels",
+      "company": "Krinski",
+      "education": "Theology Student at NPU Dallas",
+      "email": "jugleni@krinski.com",
+      "phone": "+1 469-328-5888",
+      "website": "https://www.jugleni.com",
+      "instagram": "@jugleni",
+      "instagram_url": "https://instagram.com/jugleni",
+      "linkedin": "https://linkedin.com/in/jugleni",
+      "twitter": "@jugleni",
+      "twitter_url": "https://twitter.com/jugleni",
+      "facebook": "https://facebook.com/jugleni",
+      "github": "https://github.com/jugleni",
+      "profileImage": "https://placehold.co/200x200"
+    };
+  
+    // Garantir que os dados sejam carregados imediatamente
+    document.addEventListener('DOMContentLoaded', () => {
+      // Preencher os dados manualmente
+      document.getElementById('profileName').textContent = contactData.name;
+      document.getElementById('profileTitle').textContent = contactData.title;
+      document.getElementById('profileCompany').textContent = contactData.company;
+      document.getElementById('profileEducation').textContent = contactData.education;
+      document.getElementById('profileImage').src = contactData.profileImage;
+      
+      // Inicializar o perfil completo
+      initializeProfile();
     });
   </script>
 
