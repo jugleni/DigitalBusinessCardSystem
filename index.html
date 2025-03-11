@@ -104,6 +104,17 @@
         </div>
     </div>
 
+    <!-- Diagnóstico para carregamento (remover após teste) -->
+    <script>
+        window.addEventListener('error', function(e) {
+            if (e.target.tagName === 'SCRIPT' && e.target.src.includes('script.js')) {
+                console.error('Erro no carregamento do script.js');
+                alert('Erro ao carregar script.js. Verifique o console.');
+            }
+        }, true);
+    </script>
+
+    <!-- Script principal -->
     <script src="script.js"></script>
 </body>
 </html>

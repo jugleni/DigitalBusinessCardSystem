@@ -18,7 +18,6 @@ digital-business-card/
 ├── styles.css           # Styling and layout
 ├── script.js            # JavaScript functionality
 ├── contact-data.json    # Your contact information 
-├── your-photo.jpg       # Your profile photo (optional)
 └── README.md            # This file
 ```
 
@@ -130,14 +129,20 @@ To modify the form fields, edit the `<form>` section in `index.html`.
 2. Make sure your hosting provider supports HTTPS
 3. The QR code contains a direct vCard data URI, so it should work offline
 
-## Advanced Customization
+### JSON File Not Loading
 
-For more advanced customization, you can:
+1. Make sure the `contact-data.json` file is in the same directory as the HTML file
+2. Check that the file name is exactly "contact-data.json" (case sensitive)
+3. Verify the JSON content is valid (no trailing commas, properly quoted strings)
+4. If hosting on Cloudflare Pages, make sure all files were uploaded correctly
 
-1. Modify the vCard format in the `generateVCard()` function in `script.js`
-2. Add more fields to the contact form in `index.html`
-3. Change the QR code settings in the `generateQRCode()` function
-4. Add animations or transitions in `styles.css`
+## Debug Mode
+
+If you're experiencing issues, you can enable debug logging:
+
+1. Open the browser's developer console (F12 or right-click > Inspect > Console)
+2. Check for any error messages
+3. The script includes multiple console logs to help identify where problems might occur
 
 ## License
 

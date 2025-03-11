@@ -1,3 +1,6 @@
+// Log inicial para verificar se o script está carregando
+console.log('Script.js está carregando...');
+
 // DOM elements
 const profileImage = document.getElementById('profileImage');
 const profileName = document.getElementById('profileName');
@@ -24,16 +27,23 @@ let contactData = {};
  * Load contact data from JSON file
  */
 async function loadContactData() {
+    console.log('Tentando carregar dados de contact-data.json');
     try {
         const response = await fetch('contact-data.json');
+        console.log('Resposta do fetch:', response.status, response.statusText);
+        
         if (!response.ok) {
-            throw new Error('Failed to load contact data');
+            throw new Error(`Failed to load contact data: ${response.status} ${response.statusText}`);
         }
+        
         contactData = await response.json();
+        console.log('Dados carregados com sucesso:', contactData);
         initializeProfile();
     } catch (error) {
-        console.error('Error loading contact data:', error);
-        // Fallback to embedded data if file loading fails
+        console.error('Erro ao carregar dados JSON:', error);
+        
+        // Fallback para dados embutidos
+        console.log('Usando dados de fallback');
         contactData = {
             "name": "Jugleni Krinski (Jake)",
             "title": "Network Support | Software & App Development | Digital Marketing for Funnels",
@@ -63,6 +73,8 @@ async function loadContactData() {
  * Initialize profile with contact data
  */
 function initializeProfile() {
+    console.log('Inicializando perfil...');
+    
     document.title = `Digital Business Card - ${contactData.name}`;
     
     // Set profile image with error handling
@@ -124,6 +136,8 @@ function initializeProfile() {
     if (contactData.github) {
         createContactItem('fab fa-github', 'GitHub', formatUrl(contactData.github), contactData.github);
     }
+    
+    console.log('Perfil inicializado com sucesso');
 }
 
 // ------------------------
@@ -221,7 +235,7 @@ URL:${contactData.website}`;
     }
     
     if (contactData.twitter) {
-        vCardContent += `\nX-SOCIALPROFILE;TYPE=twitter:${contactData.twitter}`;
+        vCardContent += `\nX-SOCIALPROFILE;TYPE=twitter:${contactData.twitter.replace('@', '')}`;
     }
     
     if (contactData.facebook) {
@@ -448,4 +462,118 @@ function trackContactClick(contactType) {
     }
     
     // Log to console for debugging
-    console.log(`Contact clicked: ${contactType}`);
+    console.log(`Contact clicked: ${contactType} on ${getBrowserName()}`);
+}
+
+/**
+ * Get browser name for analytics
+ * @returns {string} Browser name
+ */
+function getBrowserName() {
+    const userAgent = navigator.userAgent;
+    let browserName;
+    
+    if (/Safari/i.test(userAgent) && !/Chrome/i.test(userAgent)) {
+        browserName = 'Safari';
+    } else if (/Chrome/i.test(userAgent)) {
+        browserName = 'Chrome';
+    } else if (/Firefox/i.test(userAgent)) {
+        browserName = 'Firefox';
+    } else if (/MSIE|Trident/i.test(userAgent)) {
+        browserName = 'IE';
+    } else if (/Edge/i.test(userAgent)) {
+        browserName = 'Edge';
+    } else {
+        browserName = 'Unknown';
+    }
+    
+    return browserName;
+}
+
+/**
+ * Ensure URL starts with http:// or https://
+ * @param {string} url - URL to format
+ * @returns {string} Formatted URL
+ */
+function ensureHttps(url) {
+    if (!url) return '';
+    return url.startsWith('http') ? url : 'https://' + url;
+}
+
+/**
+ * Format URL for display (remove https:// and trailing slash)
+ * @param {string} url - URL to format
+ * @returns {string} Formatted URL
+ */
+function formatUrl(url) {
+    if (!url) return '';
+    return url.replace(/^https?:\/\//, '').replace(/\/$/, '');
+}
+
+// ------------------------
+// Event listeners
+// ------------------------
+
+// Event listener for page load
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOMContentLoaded: Inicializando listeners de eventos');
+    
+    // Load contact data
+    loadContactData();
+
+    // Save contact button - Now opens contact directly and shows form afterward
+    if (saveContactBtn) {
+        saveContactBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            console.log('Botão Save Contact clicado');
+            
+            // For mobile devices, try to open contact directly
+            if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                openContactInApp();
+            } else {
+                // For desktop, show QR code modal
+                generateQRCode();
+                qrModal.style.display = 'flex';
+            }
+        });
+    } else {
+        console.error('Botão saveContactBtn não encontrado');
+    }
+
+    // Close QR modal and show share form
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', () => {
+            qrModal.style.display = 'none';
+            shareForm.style.display = 'block';
+            // Scroll to the form
+            shareForm.scrollIntoView({ behavior: 'smooth' });
+        });
+    }
+
+    // Download vCard button
+    if (downloadVCardBtn) {
+        downloadVCardBtn.addEventListener('click', downloadVCard);
+    }
+
+    // Form submission
+    if (contactForm) {
+        contactForm.addEventListener('submit', submitForm);
+    }
+
+    // Close modal when clicking outside
+    window.addEventListener('click', (e) => {
+        if (e.target === qrModal) {
+            qrModal.style.display = 'none';
+        }
+    });
+    
+    console.log('Todos os event listeners configurados');
+});
+
+// Verificação adicional após 2 segundos
+setTimeout(() => {
+    if (!profileName.textContent) {
+        console.log('Problema detectado: Perfil não carregado após 2 segundos. Tentando novamente...');
+        loadContactData();
+    }
+}, 2000);
