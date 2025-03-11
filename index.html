@@ -12,7 +12,7 @@
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-XXXXX'); // Replace GTM-XXXXX with your GTM ID
+    })(window,document,'script','dataLayer','	GTM-TZTZH69M'); // Replace GTM-XXXXX with your GTM ID
     </script>
     <!-- End Google Tag Manager -->
 
@@ -337,7 +337,7 @@
 </head>
 <body>
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXX"
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=	GTM-TZTZH69M"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
@@ -478,12 +478,12 @@
                 // Add error handling for image loading
                 profileImage.onerror = function() {
                     console.error("Error loading profile image. Using default image.");
-                    this.src = "https://placehold.co/200x200/222/fff?text=" + 
+                    this.src = "photo.png" + 
                         encodeURIComponent(contactData.name.split(' ')[0][0] + contactData.name.split(' ')[1][0]);
                 };
             } else {
                 // Generate initials as fallback
-                profileImage.src = "https://placehold.co/200x200/222/fff?text=" + 
+                profileImage.src = "photo.png" + 
                     encodeURIComponent(contactData.name.split(' ')[0][0] + contactData.name.split(' ')[1][0]);
             }
             
