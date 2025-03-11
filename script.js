@@ -29,7 +29,7 @@ let contactData = {};
 async function loadContactData() {
     console.log('Tentando carregar dados de contact-data.json');
     try {
-        const response = await fetch('contact-data.json');
+        const response = await fetch('data.json');
         console.log('Resposta do fetch:', response.status, response.statusText);
         
         if (!response.ok) {

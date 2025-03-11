@@ -114,6 +114,15 @@
         }, true);
     </script>
 
+<script>
+    console.log('Diagnóstico: Script de verificação está rodando');
+    console.log('DOM Elements:', {
+      profileImage: !!document.getElementById('profileImage'),
+      profileName: !!document.getElementById('profileName'),
+      contactLinks: !!document.getElementById('contactLinks')
+    });
+  </script>
+
     <!-- Script principal -->
     <script src="script.js"></script>
 </body>
